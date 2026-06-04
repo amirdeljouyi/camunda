@@ -682,7 +682,7 @@ public class ExporterConfiguration {
 
     public List<String> validate() {
       final List<String> errors = new ArrayList<>();
-      if (type == ReplicationType.LOG_SEQ
+      if (type == ReplicationType.LSN
           && (pollingInterval.isNegative() || pollingInterval.isZero())) {
         errors.add(
             String.format(
@@ -694,12 +694,12 @@ public class ExporterConfiguration {
             String.format(
                 "asyncReplication.minSyncReplicas must be greater 0 but was %d", minSyncReplicas));
       }
-      if (type == ReplicationType.LOG_SEQ && (maxLag.isNegative() || maxLag.isZero())) {
+      if (type == ReplicationType.LSN && (maxLag.isNegative() || maxLag.isZero())) {
         errors.add(
             String.format(
                 "asyncReplication.maxLag must be a positive duration but was %s", maxLag));
       }
-      if (type == ReplicationType.DELAY && (delay.isNegative() || delay.isZero())) {
+      if (type == ReplicationType.TIME_DELAY && (delay.isNegative() || delay.isZero())) {
         errors.add(
             String.format("asyncReplication.delay must be a positive duration but was %s", delay));
       }
@@ -708,8 +708,8 @@ public class ExporterConfiguration {
 
     public enum ReplicationType {
       NONE,
-      LOG_SEQ,
-      DELAY
+      LSN,
+      TIME_DELAY
     }
   }
 }

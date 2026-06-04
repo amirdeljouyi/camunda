@@ -79,7 +79,7 @@ abstract class AbstractAsyncReplicationIT<R extends ReplicationClusterContainer>
                           "asyncReplication",
                           Map.of(
                               "type",
-                              "LOG_SEQ",
+                              "LSN",
                               "pollingInterval",
                               "PT1S",
                               "maxLag",
