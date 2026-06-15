@@ -71,3 +71,12 @@ configurations.named("testRuntimeClasspath") {
     exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
     exclude(group = "ch.qos.logback", module = "logback-classic")
 }
+
+tasks.named<Test>("ut") {
+    testClassesDirs = files()
+    classpath = files()
+}
+
+tasks.named<Test>("it") {
+    include("**/IT*.class", "**/*IT.class", "**/*ITCase.class", "**/Test*.class", "**/*Test.class", "**/*Tests.class", "**/*TestCase.class")
+}
