@@ -477,10 +477,9 @@ public final class OpenSearchArchiverRepository extends OpensearchRepository
       requestBuilder.searchAfter(searchAfter);
     }
 
+    final var baseTransportOptions = client._transportOptions();
     final var transportOptions =
-        (client._transportOptions() != null
-                ? client._transportOptions()
-                : TransportOptions.builder().build())
+        (baseTransportOptions != null ? baseTransportOptions : TransportOptions.builder().build())
             .with(b -> b.setParameter("filter_path", "-hits.hits._score"));
 
     final var timer = Timer.start();
