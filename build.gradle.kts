@@ -1,3 +1,1 @@
-plugins {
-    id("buildlogic.root-conventions")
-}
+plugins { id("buildlogic.root-conventions") }

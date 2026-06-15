@@ -10,8 +10,8 @@
  */
 
 plugins {
-    id("buildlogic.server-conventions")
-    id("com.google.protobuf")
+  id("buildlogic.server-conventions")
+  id("com.google.protobuf")
 }
 
 val versionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -19,29 +19,17 @@ val protobufVersion = versionCatalog.findVersion("protobuf").get().requiredVersi
 val grpcVersion = versionCatalog.findVersion("grpc").get().requiredVersion
 
 protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:$protobufVersion"
-    }
-    plugins {
-        create("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
-        }
-    }
-    generateProtoTasks {
-        all().forEach { task ->
-            task.plugins {
-                create("grpc")
-            }
-        }
-    }
+  protoc { artifact = "com.google.protobuf:protoc:$protobufVersion" }
+  plugins { create("grpc") { artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion" } }
+  generateProtoTasks { all().forEach { task -> task.plugins { create("grpc") } } }
 }
 
 // Ensure generated code is on the source path
 sourceSets {
-    main {
-        java {
-            srcDir(layout.buildDirectory.dir("generated/source/proto/main/grpc"))
-            srcDir(layout.buildDirectory.dir("generated/source/proto/main/java"))
-        }
+  main {
+    java {
+      srcDir(layout.buildDirectory.dir("generated/source/proto/main/grpc"))
+      srcDir(layout.buildDirectory.dir("generated/source/proto/main/java"))
     }
+  }
 }

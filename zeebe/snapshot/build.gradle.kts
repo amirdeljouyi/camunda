@@ -3,26 +3,26 @@
  */
 
 plugins {
-    id("buildlogic.server-conventions")
-    id("buildlogic.test-jar-conventions")
+  id("buildlogic.server-conventions")
+  id("buildlogic.test-jar-conventions")
 }
 
 dependencies {
-    implementation(project(":zeebe-util"))
-    implementation(project(":zeebe-scheduler"))
-    api(libs.io.micrometer.micrometer.core)
-    api(libs.io.micrometer.micrometer.commons)
-    implementation(project(":zeebe-protocol"))
-    api(libs.org.agrona.agrona)
-    implementation(libs.org.slf4j.slf4j.api)
-    api(libs.com.fasterxml.jackson.core.jackson.databind)
-    api(libs.com.fasterxml.jackson.core.jackson.annotations)
-    testImplementation(libs.org.awaitility.awaitility)
-    testImplementation(project(":zeebe-scheduler", configuration = "tests"))
-    testImplementation(libs.junit.junit)
-    testRuntimeOnly(libs.org.junit.vintage.junit.vintage.engine.x1)
-    testImplementation(project(":zeebe-test-util"))
-    testImplementation(libs.org.mockito.mockito.core)
+  implementation(project(":zeebe-util"))
+  implementation(project(":zeebe-scheduler"))
+  api(libs.io.micrometer.micrometer.core)
+  api(libs.io.micrometer.micrometer.commons)
+  implementation(project(":zeebe-protocol"))
+  api(libs.org.agrona.agrona)
+  implementation(libs.org.slf4j.slf4j.api)
+  api(libs.com.fasterxml.jackson.core.jackson.databind)
+  api(libs.com.fasterxml.jackson.core.jackson.annotations)
+  testImplementation(libs.org.awaitility.awaitility)
+  testImplementation(project(":zeebe-scheduler", configuration = "tests"))
+  testImplementation(libs.junit.junit)
+  testRuntimeOnly(libs.org.junit.vintage.junit.vintage.engine.x1)
+  testImplementation(project(":zeebe-test-util"))
+  testImplementation(libs.org.mockito.mockito.core)
 }
 
 description = "Zeebe Snapshots"

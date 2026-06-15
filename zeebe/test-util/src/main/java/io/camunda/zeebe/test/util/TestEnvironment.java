@@ -34,8 +34,7 @@ public final class TestEnvironment {
         // passes the name of Gradle's internal worker ID property via test.gradleWorkerIdProperty.
         // Each worker JVM has that property set to its unique ID (1-based), which we map to a
         // 0-based fork number so SocketUtil assigns non-overlapping port ranges per worker.
-        final String gradleWorkerIdPropName =
-            System.getProperty("test.gradleWorkerIdProperty");
+        final String gradleWorkerIdPropName = System.getProperty("test.gradleWorkerIdProperty");
         if (gradleWorkerIdPropName != null) {
           final String workerId = System.getProperty(gradleWorkerIdPropName);
           if (workerId != null) {

@@ -6,44 +6,47 @@ import com.github.gradle.node.NodeExtension
 import com.github.gradle.node.yarn.task.YarnTask
 import org.gradle.api.provider.Provider
 
-fun Provider<String>.asEnabledFlag(): Provider<Boolean> =
-    map { value -> value.isEmpty() || value.toBoolean() }
+fun Provider<String>.asEnabledFlag(): Provider<Boolean> = map { value ->
+  value.isEmpty() || value.toBoolean()
+}
 
 plugins {
-    id("buildlogic.server-conventions")
-    id("com.github.node-gradle.node")
+  id("buildlogic.server-conventions")
+  id("com.github.node-gradle.node")
 }
 
 extensions.configure<NodeExtension> {
-    download.set(true)
-    version.set("24.13.0")
-    yarnVersion.set("1.22.22")
-    workDir.set(layout.projectDirectory.dir(".node/nodejs"))
-    yarnWorkDir.set(layout.projectDirectory.dir(".node/yarn"))
-    nodeProjectDir.set(layout.projectDirectory)
+  download.set(true)
+  version.set("24.13.0")
+  yarnVersion.set("1.22.22")
+  workDir.set(layout.projectDirectory.dir(".node/nodejs"))
+  yarnWorkDir.set(layout.projectDirectory.dir(".node/yarn"))
+  nodeProjectDir.set(layout.projectDirectory)
 }
 
 val skipFrontendBuild =
-    providers.gradleProperty("skip.fe.build")
-        .orElse(providers.gradleProperty("quickly"))
-        .asEnabledFlag()
-        .orElse(false)
+  providers
+    .gradleProperty("skip.fe.build")
+    .orElse(providers.gradleProperty("quickly"))
+    .asEnabledFlag()
+    .orElse(false)
 
-val yarnInstall by tasks.registering(YarnTask::class) {
+val yarnInstall by
+  tasks.registering(YarnTask::class) {
     enabled = !skipFrontendBuild.get()
     dependsOn(tasks.named("yarnSetup"))
     args.set(listOf("install"))
-}
+  }
 
-val yarnBuild by tasks.registering(YarnTask::class) {
+val yarnBuild by
+  tasks.registering(YarnTask::class) {
     enabled = !skipFrontendBuild.get()
     dependsOn(yarnInstall)
     args.set(listOf("build"))
-}
+  }
 
-tasks.named("processResources") {
-    mustRunAfter(yarnBuild)
-}
+tasks.named("processResources") { mustRunAfter(yarnBuild) }
 
 group = "io.camunda.optimize"
+
 description = "Optimize Client"
