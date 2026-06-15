@@ -321,33 +321,5 @@ archiver:
 
 .PHONY: clean
 clean:
-	-helm --namespace $(namespace) uninstall $(namespace)
-	-helm --namespace $(namespace) uninstall $(namespace)-test
-	-helm --namespace $(namespace) uninstall elasticsearch-exporter
-	-kubectl delete -n $(namespace) pvc -l app.kubernetes.io/instance=$(namespace)
-	-kubectl delete -n $(namespace) pvc -l app=elasticsearch-master
-	-kubectl delete -n $(namespace) cronjob leader-balancer
-# Clean up secondary storage based on helm charts
-ifneq ($(filter $(secondary_storage),postgresql mysql mariadb),)
-	@echo "Cleaning up $(secondary_storage) database for namespace $(namespace)..."
-	-helm --namespace $(namespace) uninstall $(secondary_storage)
-	-kubectl delete -n $(namespace) pvc -l app.kubernetes.io/name=$(secondary_storage)
-# MSSQL and Oracle are deployed via plain Kubernetes manifests, so we need to delete them via kubectl
-else ifneq ($(filter $(secondary_storage),mssql oracle),)
-	@echo "Cleaning up $(secondary_storage) database for namespace $(namespace)..."
-	-kubectl delete --namespace $(namespace) -f databases/$(secondary_storage).yaml
-	# StatefulSet PVCs are not deleted automatically — remove them explicitly.
-	-kubectl delete --namespace $(namespace) pvc -l app.kubernetes.io/name=$(secondary_storage)
-else ifeq ($(secondary_storage),opensearch)
-	@echo "Cleaning up OpenSearch cluster for namespace $(namespace)..."
-	-helm --namespace $(namespace) uninstall opensearch
-	-kubectl delete -n $(namespace) pvc -l app.kubernetes.io/name=opensearch
-else ifeq ($(secondary_storage),elasticsearch)
-	@# Elasticsearch is deleted recursively via the deletion of the namespace below.
-endif
 	@echo "Deleting namespace $(namespace) and waiting for finalization..."
-	# `--wait` (default) blocks until the namespace is fully gone. We intentionally
-	# wait so that a subsequent `make install` (or `make clean install`) doesn't
-	# race against finalizers — applying manifests into a still-terminating
-	# namespace errors out with "namespace X is being terminated".
 	-kubectl delete -f resources/namespace.yaml --ignore-not-found
