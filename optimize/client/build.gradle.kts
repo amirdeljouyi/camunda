@@ -42,9 +42,7 @@ val yarnBuild by tasks.registering(YarnTask::class) {
 }
 
 tasks.named("processResources") {
-    if (!skipFrontendBuild.get()) {
-        dependsOn(yarnBuild)
-    }
+    mustRunAfter(yarnBuild)
 }
 
 group = "io.camunda.optimize"

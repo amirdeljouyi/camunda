@@ -307,6 +307,16 @@ val assembleDist by tasks.registering(Sync::class) {
     }
 }
 
+// npm builds only run when producing a dist artifact, not during tests or compilation.
+tasks.named("assembleDist") {
+    dependsOn(
+        project(":identity-webjar").tasks.named("npmBuild"),
+        project(":operate-webjar").tasks.named("npmBuild"),
+        project(":tasklist-webjar").tasks.named("npmBuild"),
+        project(":webapp-webjar").tasks.named("npmBuild"),
+    )
+}
+
 val distTar by tasks.registering(Tar::class) {
     dependsOn(assembleDist)
     compression = Compression.GZIP

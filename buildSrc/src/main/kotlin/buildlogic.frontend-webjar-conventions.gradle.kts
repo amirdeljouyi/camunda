@@ -87,9 +87,7 @@ val npmBuild by tasks.registering(NpmTask::class) {
 }
 
 tasks.named<ProcessResources>("processResources") {
-    if (!skipFrontendBuild.get()) {
-        dependsOn(npmBuild)
-    }
+    mustRunAfter(npmBuild)
     from(frontendPackagedDirectory.orElse(frontendBuildDirectory)) {
         into(resourceTargetPath)
     }
