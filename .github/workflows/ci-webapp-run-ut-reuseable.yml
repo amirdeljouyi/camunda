@@ -21,6 +21,7 @@ on:
         required: true
         type: string
       owner:
+        type: string
         description: "Canonical GitHub team handle owning the suite under test, e.g. '@camunda/data-layer'"
       gradleTestTasks:
         description: "Gradle test tasks to execute for this suite when gradle-build label is set"
