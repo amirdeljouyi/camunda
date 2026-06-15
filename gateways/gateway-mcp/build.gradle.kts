@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation(enforcedPlatform(libs.org.springframework.boot.spring.boot.dependencies))
+    implementation(project(":camunda-spring-utils"))
     implementation(project(":camunda-gateway-model"))
     implementation(project(":configuration"))
     implementation(project(":camunda-gateway-mapping-http"))

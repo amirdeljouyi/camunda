@@ -9,6 +9,11 @@ plugins {
 dependencies {
     api(libs.org.springframework.spring.context)
     api(libs.org.springframework.spring.core)
+    compileOnly(libs.org.springframework.spring.web)
+    compileOnly(libs.jakarta.servlet.jakarta.servlet.api)
+    testImplementation(libs.org.springframework.spring.web)
+    testImplementation(libs.jakarta.servlet.jakarta.servlet.api)
+    testImplementation(libs.org.springframework.spring.test)
     testImplementation(libs.org.mockito.mockito.core)
 }
 
