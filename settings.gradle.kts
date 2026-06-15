@@ -1647,9 +1647,6 @@ include(":operate-webapp")
 
 include(":camunda-spring-boot-4-starter")
 
-if (!quickly) {
-  include(":optimize-parent")
-}
 
 include(":zeebe-gateway-rest")
 
@@ -1958,9 +1955,6 @@ project(":operate-webapp").projectDir = file("operate/webapp")
 
 project(":camunda-spring-boot-4-starter").projectDir = file("clients/camunda-spring-boot-4-starter")
 
-if (!quickly) {
-  project(":optimize-parent").projectDir = file("optimize")
-}
 
 project(":zeebe-gateway-rest").projectDir = file("zeebe/gateway-rest")
 
