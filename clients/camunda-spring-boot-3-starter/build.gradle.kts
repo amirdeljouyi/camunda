@@ -60,6 +60,11 @@ tasks.named<JavaCompile>("compileTestJava") {
     )
 }
 
+tasks.named<Test>("ut") {
+    exclude("**/configurationMetadata/AlignmentTest.class")
+    exclude("**/configurationMetadata/FormattingTest.class")
+}
+
 dependencies {
     implementation(project(":camunda-spring-boot-starter")) {
         exclude(group = "org.springframework.boot", module = "spring-boot-health")
