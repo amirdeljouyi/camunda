@@ -282,7 +282,7 @@ final class ZeebeIntegrationExtension
   }
 
   private String workingDirectoryName(final MemberId id) {
-    return "broker-" + id.id().replace("/", "-");
+    return "broker-" + id.id().replace("_", "-");
   }
 
   private ClusterResource asClusterResource(final Object testInstance, final Field field) {
