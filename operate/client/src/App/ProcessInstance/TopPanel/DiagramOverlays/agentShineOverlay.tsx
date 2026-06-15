@@ -8,14 +8,66 @@
 
 /* eslint-disable react-refresh/only-export-components -- overlay modules intentionally co-locate their data hook, config, and renderer in a single file */
 
-import {useMemo} from 'react';
+import {useLayoutEffect, useMemo, useState} from 'react';
+import {createPortal} from 'react-dom';
+import styled, {keyframes} from 'styled-components';
 import {AGENT_SHINE} from 'modules/bpmn-js/badgePositions';
-import {AgentShineOverlay} from '../AgentShineOverlay';
 import {useFirstAgentInstancePerElement} from './agentInstances';
+import {PURPLE_30, PURPLE_40, PURPLE_60} from './agentStatusOverlay';
 import type {AgentShinePayload} from 'modules/bpmn-js/overlayTypes';
 import type {DiagramOverlay, OverlayModule} from './types';
 
 const TYPE = 'agentShine';
+
+// NOTE: Custom colors and styles that create a shimmering outline that sits above
+// the overlaid element. The goal is a "shiny" AI effect.
+
+const shine = keyframes`
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+`;
+
+const mask = `linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)`;
+
+const ShineBox = styled.div<{
+  $width: number;
+  $height: number;
+  $radius: number;
+}>`
+  position: absolute;
+  /* These tiny adjustments compared to the overlaid element ensure that the outlines overlap perfectly. */
+  inset: -1px;
+  width: ${({$width}) => $width + 2}px;
+  height: ${({$height}) => $height + 2}px;
+  border-radius: ${({$radius}) => $radius + 1}px;
+  pointer-events: none;
+  z-index: -1;
+
+  padding: var(--cds-spacing-01);
+  will-change: background-position;
+  animation: ${shine} 8s linear infinite;
+  background-size: 300% 300%;
+  background-image: radial-gradient(
+    transparent,
+    transparent,
+    ${PURPLE_40},
+    ${PURPLE_60},
+    ${PURPLE_30},
+    transparent,
+    transparent
+  );
+  mask: ${mask};
+  -webkit-mask: ${mask};
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+`;
+
+type Size = {
+  width: number;
+  height: number;
+  radius: number;
+};
 
 const useOverlaysData: OverlayModule['useOverlaysData'] = ({
   isModificationModeEnabled,
@@ -39,11 +91,40 @@ const useOverlaysData: OverlayModule['useOverlaysData'] = ({
 };
 
 const Renderer: React.FC<{overlay: DiagramOverlay}> = ({overlay}) => {
-  return (
-    <AgentShineOverlay
-      container={overlay.container}
-      elementId={overlay.elementId}
-    />
+  const {elementId, container} = overlay;
+  const [size, setSize] = useState<Size | null>(null);
+
+  useLayoutEffect(() => {
+    const hostElement = document.querySelector<SVGGraphicsElement>(
+      `[data-element-id="${elementId}"] .djs-visual rect`,
+    );
+    if (hostElement === null) {
+      setSize(null);
+      return;
+    }
+
+    const width = Number.parseFloat(hostElement.getAttribute('width') ?? '0');
+    const height = Number.parseFloat(hostElement.getAttribute('height') ?? '0');
+    const radius = Number.parseFloat(hostElement.getAttribute('rx') ?? '0');
+    setSize({
+      width: Number.isFinite(width) ? width : 0,
+      height: Number.isFinite(height) ? height : 0,
+      radius: Number.isFinite(radius) ? radius : 0,
+    });
+  }, [elementId]);
+
+  if (size === null) {
+    return null;
+  }
+
+  return createPortal(
+    <ShineBox
+      data-testid={`agent-shine-overlay-${elementId}`}
+      $width={size.width}
+      $height={size.height}
+      $radius={size.radius}
+    />,
+    container,
   );
 };
 

@@ -11,7 +11,7 @@
 import {useMemo} from 'react';
 import {MODIFICATIONS} from 'modules/bpmn-js/badgePositions';
 import {useModificationsByElement} from 'modules/hooks/modifications';
-import {ModificationBadgeOverlay} from '../ModificationBadgeOverlay';
+import {ModificationBadgeOverlay} from 'modules/components/ModificationBadgeOverlay';
 import type {DiagramOverlay, OverlayModule} from './types';
 
 const TYPE = 'modificationsBadge';
