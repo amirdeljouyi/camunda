@@ -53,19 +53,20 @@ jobs:
           - suite: DataLayer
             suiteName: Data Layer
             owner: '@camunda/data-layer'
-            gradleTestTasks: ":optimize-commons:ut --tests io.camunda.optimize.OptimizeDataLayerTestSuite :optimize-backend:ut --tests io.camunda.optimize.OptimizeDataLayerTestSuite :upgrade-optimize:ut --tests io.camunda.optimize.upgrade.OptimizeDataLayerTestSuite"
+            modules: "optimize-commons optimize-backend upgrade-optimize"
           - suite: CoreFeatures
             suiteName: Core Features
             owner: '@camunda/core-features'
           - suite: CoreFeatures
             suiteName: Core Features
-            gradleTestTasks: ":optimize-commons:ut --tests io.camunda.optimize.OptimizeCoreFeaturesTestSuite :optimize-backend:ut --tests io.camunda.optimize.OptimizeCoreFeaturesTestSuite"
+            modules: "optimize-commons optimize-backend"
     with:
       componentName: "Optimize"
       suite: ${{ matrix.suite }}
       suiteName: ${{ matrix.suiteName }}
       owner: ${{ matrix.owner }}
-      gradleTestTasks: ${{ matrix.gradleTestTasks }}
+      modules: ${{ matrix.modules }}
+      gradleTestTaskName: ut
 
   optimize-it-elasticsearch:
     name: "Integration / Elasticsearch ITs"

@@ -53,19 +53,19 @@ jobs:
           - suite: DataLayer
             suiteName: Data Layer
             owner: '@camunda/data-layer'
-            gradleTestTasks: ":operate-common:test --tests io.camunda.operate.OperateDataLayerTestSuite :operate-schema:test --tests io.camunda.operate.OperateDataLayerTestSuite"
+            modules: "operate-common operate-schema"
           - suite: CoreFeatures
             suiteName: Core Features
             owner: '@camunda/core-features'
           - suite: CoreFeatures
             suiteName: Core Features
-            gradleTestTasks: ":operate-common:test --tests io.camunda.operate.OperateCoreFeaturesTestSuite"
+            modules: "operate-common"
     with:
       componentName: "Operate"
       suite: ${{ matrix.suite }}
       suiteName: ${{ matrix.suiteName }}
       owner: ${{ matrix.owner }}
-      gradleTestTasks: ${{ matrix.gradleTestTasks }}
+      modules: ${{ matrix.modules }}
 
   # Checks to see if Operate can properly build itself and a docker image
   build-operate-backend:

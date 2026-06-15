@@ -23,10 +23,15 @@ on:
       owner:
         type: string
         description: "Canonical GitHub team handle owning the suite under test, e.g. '@camunda/data-layer'"
-      gradleTestTasks:
-        description: "Gradle test tasks to execute for this suite when gradle-build label is set"
+      modules:
+        description: "Space-separated Gradle subproject names to test when gradle-build label is set (e.g. 'operate-common operate-schema')"
         required: false
         default: ""
+        type: string
+      gradleTestTaskName:
+        description: "Gradle test task name (default: test; use 'ut' for Optimize)"
+        required: false
+        default: "test"
         type: string
 
 env:
@@ -88,11 +93,15 @@ jobs:
       - name: Gradle Run Test
         if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'gradle-build') }}
         shell: bash
-        run: >
-          if [[ -z "${{ inputs.gradleTestTasks }}" ]]; then
+        run: |
+          if [[ -z "${{ inputs.modules }}" ]]; then
             printf 'No Gradle unit test tasks configured for %s %s\n' "${{ inputs.componentName }}" "${{ inputs.suite }}" | tee "${BUILD_OUTPUT_FILE_PATH}";
           else
-            ./gradlew --no-daemon --console=plain --parallel -Pskip.fe.build ${{ inputs.gradleTestTasks }} | tee "${BUILD_OUTPUT_FILE_PATH}";
+            TASKS=""
+            for modules in ${{ inputs.modules }}; do
+              TASKS="${TASKS} :${modules}:${{ inputs.gradleTestTaskName }}"
+            done
+            ./gradlew --no-daemon --console=plain --parallel -Pskip.fe.build ${TASKS} --tests "*${{ inputs.componentName }}${{ inputs.suite }}TestSuite" | tee "${BUILD_OUTPUT_FILE_PATH}";
           fi
       - name: Analyze Test Runs
         id: analyze-test-run

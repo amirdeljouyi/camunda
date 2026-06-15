@@ -53,19 +53,19 @@ jobs:
           - suite: DataLayer
             suiteName: Data Layer
             owner: '@camunda/data-layer'
-            gradleTestTasks: ""
+            modules: ""
           - suite: CoreFeatures
             suiteName: Core Features
             owner: '@camunda/core-features'
           - suite: CoreFeatures
             suiteName: Core Features
-            gradleTestTasks: ":tasklist-common:test --tests io.camunda.tasklist.TasklistCoreFeaturesTestSuite :tasklist-webapp:test --tests io.camunda.tasklist.webapp.TasklistCoreFeaturesTestSuite"
+            modules: "tasklist-common tasklist-webapp"
     with:
       componentName: "Tasklist"
       suite: ${{ matrix.suite }}
       suiteName: ${{ matrix.suiteName }}
       owner: ${{ matrix.owner }}
-      gradleTestTasks: ${{ matrix.gradleTestTasks }}
+      modules: ${{ matrix.modules }}
 
   fe-type-check:
     if: inputs.runFeTests
