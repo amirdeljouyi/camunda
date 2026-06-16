@@ -448,11 +448,9 @@ dependencyResolutionManagement {
       library("com-oracle-database-jdbc-ojdbc8", "com.oracle.database.jdbc", "ojdbc8")
         .versionRef("com-oracle-database-jdbc-ojdbc8")
       // version managed by buildlogic.optimize-conventions
-      library("com-sun-mail-jakarta-mail", "com.sun.mail", "jakarta.mail")
-        .withoutVersion()
+      library("com-sun-mail-jakarta-mail", "com.sun.mail", "jakarta.mail").withoutVersion()
       // version managed by buildlogic.optimize-conventions
-      library("com-tdunning-t-digest", "com.tdunning", "t-digest")
-        .withoutVersion()
+      library("com-tdunning-t-digest", "com.tdunning", "t-digest").withoutVersion()
       library("com-tngtech-archunit-archunit", "com.tngtech.archunit", "archunit")
         .versionRef("archunit")
       library(
@@ -527,7 +525,11 @@ dependencyResolutionManagement {
         )
         .withoutVersion()
       // version managed by buildlogic.optimize-conventions
-      library("io-github-netmikey-logunit-logunit-core", "io.github.netmikey.logunit", "logunit-core")
+      library(
+          "io-github-netmikey-logunit-logunit-core",
+          "io.github.netmikey.logunit",
+          "logunit-core",
+        )
         .withoutVersion()
       library("io-github-openfeign-feign-core", "io.github.openfeign", "feign-core")
         .withoutVersion()
@@ -780,8 +782,7 @@ dependencyResolutionManagement {
         .withoutVersion()
       library("org-apache-logging-log4j-log4j-bom", "org.apache.logging.log4j", "log4j-bom")
         .versionRef("log4j")
-      library("org-apache-lucene-lucene-core", "org.apache.lucene", "lucene-core")
-        .withoutVersion()
+      library("org-apache-lucene-lucene-core", "org.apache.lucene", "lucene-core").withoutVersion()
       library(
           "org-apache-maven-surefire-maven-surefire-common",
           "org.apache.maven.surefire",
@@ -989,14 +990,17 @@ dependencyResolutionManagement {
       library("org-mock-server-mockserver-netty", "org.mock-server", "mockserver-netty")
         .withoutVersion()
       // version managed by buildlogic.optimize-conventions
-      library("org-mock-server-mockserver-junit-jupiter", "org.mock-server", "mockserver-junit-jupiter")
+      library(
+          "org-mock-server-mockserver-junit-jupiter",
+          "org.mock-server",
+          "mockserver-junit-jupiter",
+        )
         .withoutVersion()
       library("org-mockito-mockito-core", "org.mockito", "mockito-core").withoutVersion()
       library("org-mockito-mockito-junit-jupiter", "org.mockito", "mockito-junit-jupiter")
         .withoutVersion()
       // version managed by buildlogic.optimize-conventions
-      library("org-mockito-mockito-inline", "org.mockito", "mockito-inline")
-        .withoutVersion()
+      library("org-mockito-mockito-inline", "org.mockito", "mockito-inline").withoutVersion()
       library("org-mockito-mockito-bom", "org.mockito", "mockito-bom").versionRef("mockito")
       library("org-msgpack-jackson-dataformat-msgpack", "org.msgpack", "jackson-dataformat-msgpack")
         .versionRef("msgpack")
@@ -1052,8 +1056,7 @@ dependencyResolutionManagement {
         .versionRef("org-opensearch-opensearch-testcontainers")
       library("org-postgresql-postgresql", "org.postgresql", "postgresql").versionRef("postgresql")
       // version managed by buildlogic.optimize-conventions
-      library("org-quartz-scheduler-quartz", "org.quartz-scheduler", "quartz")
-        .withoutVersion()
+      library("org-quartz-scheduler-quartz", "org.quartz-scheduler", "quartz").withoutVersion()
       library("org-reactivestreams-reactive-streams", "org.reactivestreams", "reactive-streams")
         .versionRef("org-reactivestreams-reactive-streams")
       library("org-reflections-reflections", "org.reflections", "reflections")
@@ -1657,7 +1660,6 @@ include(":operate-webapp")
 
 include(":camunda-spring-boot-4-starter")
 
-
 include(":zeebe-gateway-rest")
 
 include(":camunda-security-protocol")
@@ -1936,7 +1938,6 @@ project(":operate-qa-it-tests").projectDir = file("operate/qa/integration-tests"
 project(":operate-webapp").projectDir = file("operate/webapp")
 
 project(":camunda-spring-boot-4-starter").projectDir = file("clients/camunda-spring-boot-4-starter")
-
 
 project(":zeebe-gateway-rest").projectDir = file("zeebe/gateway-rest")
 

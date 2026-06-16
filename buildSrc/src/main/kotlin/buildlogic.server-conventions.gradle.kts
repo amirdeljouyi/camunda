@@ -133,9 +133,11 @@ configurations.all {
       useVersion(springBootVersion)
     }
     // context-propagation has independent versioning; only pin the BOM-managed artifacts.
-    if (requested.group == "io.micrometer" &&
+    if (
+      requested.group == "io.micrometer" &&
         requested.name.startsWith("micrometer-") &&
-        requested.name != "micrometer-bom") {
+        requested.name != "micrometer-bom"
+    ) {
       useVersion(micrometerVersion)
     }
   }
