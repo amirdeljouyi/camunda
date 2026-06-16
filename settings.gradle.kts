@@ -1800,8 +1800,6 @@ include(":zeebe-atomix-parent")
 
 include(":camunda-security")
 
-include(":operate-schema")
-
 include(":zeebe-test-util")
 
 include(":tasklist-common")
@@ -2077,8 +2075,6 @@ project(":zeebe-bpmn-model").projectDir = file("zeebe/bpmn-model")
 project(":zeebe-atomix-parent").projectDir = file("zeebe/atomix")
 
 project(":camunda-security").projectDir = file("security")
-
-project(":operate-schema").projectDir = file("operate/schema")
 
 project(":zeebe-test-util").projectDir = file("zeebe/test-util")
 

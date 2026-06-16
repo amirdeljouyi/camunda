@@ -6,7 +6,6 @@ plugins { id("buildlogic.server-conventions") }
 
 dependencies {
   implementation(project(":operate-common"))
-  implementation(project(":operate-schema"))
   implementation(project(":webapps-schema"))
   implementation(libs.io.camunda.security.library.spring.boot.starter)
   implementation(libs.io.camunda.security.library.api)

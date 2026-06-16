@@ -33,7 +33,6 @@ dependencies {
   testImplementation(libs.org.springframework.spring.test)
   testImplementation(project(":camunda-client-java"))
   testImplementation(libs.org.testcontainers.testcontainers)
-  testImplementation(project(":operate-schema"))
   testImplementation(libs.junit.junit)
   testImplementation(libs.org.springframework.spring.web)
   testImplementation(libs.org.apache.httpcomponents.httpcore)

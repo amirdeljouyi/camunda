@@ -6,7 +6,6 @@ plugins { id("buildlogic.server-conventions") }
 
 dependencies {
   implementation(project(":operate-common"))
-  implementation(project(":operate-schema"))
   implementation(project(":webapps-schema"))
   implementation(project(":webapps-common"))
   api(libs.org.agrona.agrona)
