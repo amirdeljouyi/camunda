@@ -29,6 +29,7 @@ tasks.withType<JavaCompile>().configureEach { options.release.set(8) }
 
 val openapiDir = "${project.rootDir}/zeebe/gateway-protocol/src/main/proto/v2"
 val rawGeneratedOpenApiDir = layout.buildDirectory.dir("generated/openapi-raw")
+val discriminatorOutputDir = layout.buildDirectory.dir("generated/openapi-discriminated")
 val generatedOpenApiSources = layout.buildDirectory.dir("generated/openapi/src/main/java")
 
 val discriminatorToolClasspath by configurations.creating
@@ -46,6 +47,9 @@ val runDiscriminatorPostProcessor by
     dependsOn("openApiGenerate", compileDiscriminatorTool)
     classpath = discriminatorToolClasspath + files(layout.buildDirectory.dir("tool-classes"))
     mainClass.set("io.camunda.client.protocol.tools.DiscriminatorModelPostProcessor")
+    inputs.dir(openapiDir)
+    inputs.dir(rawGeneratedOpenApiDir)
+    outputs.dir(discriminatorOutputDir)
     args(
       openapiDir,
       rawGeneratedOpenApiDir
@@ -53,10 +57,12 @@ val runDiscriminatorPostProcessor by
         .dir("src/main/java/io/camunda/client/protocol/rest")
         .asFile
         .absolutePath,
+      discriminatorOutputDir
+        .get()
+        .dir("src/main/java/io/camunda/client/protocol/rest")
+        .asFile
+        .absolutePath,
     )
-    inputs.dir(openapiDir)
-    inputs.dir(rawGeneratedOpenApiDir)
-    outputs.dir(rawGeneratedOpenApiDir)
   }
 
 openApiGenerate {
@@ -148,7 +154,7 @@ tasks.named("compileJava") { dependsOn("stripJsonFormatFromGeneratedOpenApiSourc
 val stripJsonFormatFromGeneratedOpenApiSources by
   tasks.registering(Sync::class) {
     dependsOn(runDiscriminatorPostProcessor)
-    from(rawGeneratedOpenApiDir.map { it.dir("src/main/java") })
+    from(discriminatorOutputDir.map { it.dir("src/main/java") })
     into(generatedOpenApiSources)
     include("**/*.java")
     filter { line: String ->
