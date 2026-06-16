@@ -21,6 +21,18 @@ val jwksRsaVersion = versionCatalog.findVersion("jwks-rsa").get().requiredVersio
 val okioJvmVersion = versionCatalog.findVersion("okio-jvm").get().requiredVersion
 val nimbusJoseJwtVersion =
   versionCatalog.findVersion("com-nimbusds-nimbus-jose-jwt").get().requiredVersion
+val checkerQualVersion =
+  versionCatalog.findVersion("org-checkerframework-checker-qual").get().requiredVersion
+val commonsCollectionsVersion =
+  versionCatalog.findVersion("org-apache-commons-commons-collections").get().requiredVersion
+val gsonVersion = versionCatalog.findVersion("gson").get().requiredVersion
+val jakartaXmlBindVersion =
+  versionCatalog.findVersion("jakarta-xml-bind-jakarta-xml-bind-api").get().requiredVersion
+val javassistVersion = versionCatalog.findVersion("javassist").get().requiredVersion
+val jnaVersion = versionCatalog.findVersion("jna").get().requiredVersion
+val jnaPlatformVersion = versionCatalog.findVersion("jna-platform").get().requiredVersion
+val kotlinStdlibVersion = versionCatalog.findVersion("kotlin-stdlib").get().requiredVersion
+val tomcatVersion = versionCatalog.findVersion("tomcat").get().requiredVersion
 val includePerformanceTests = providers.gradleProperty("includePerformanceTests").isPresent
 val includeStraceTests = providers.gradleProperty("includeStraceTests").isPresent
 
@@ -98,12 +110,23 @@ dependencies {
 configurations.all {
   resolutionStrategy.force(
     "co.elastic.clients:elasticsearch-java:$esJavaVersion",
-    "org.apache.httpcomponents.core5:httpcore5:$httpcore5Version",
-    "org.apache.httpcomponents.client5:httpclient5:$httpclient5Version",
+    "com.google.code.gson:gson:$gsonVersion",
+    "commons-collections:commons-collections:$commonsCollectionsVersion",
     "com.auth0:auth0:$auth0Version",
     "com.auth0:jwks-rsa:$jwksRsaVersion",
-    "com.squareup.okio:okio-jvm:$okioJvmVersion",
     "com.nimbusds:nimbus-jose-jwt:$nimbusJoseJwtVersion",
+    "com.squareup.okio:okio-jvm:$okioJvmVersion",
+    "jakarta.xml.bind:jakarta.xml.bind-api:$jakartaXmlBindVersion",
+    "net.java.dev.jna:jna:$jnaVersion",
+    "net.java.dev.jna:jna-platform:$jnaPlatformVersion",
+    "org.apache.httpcomponents.client5:httpclient5:$httpclient5Version",
+    "org.apache.httpcomponents.core5:httpcore5:$httpcore5Version",
+    "org.apache.httpcomponents.core5:httpcore5-h2:$httpcore5Version",
+    "org.apache.tomcat.embed:tomcat-embed-el:$tomcatVersion",
+    "org.apache.tomcat.embed:tomcat-embed-websocket:$tomcatVersion",
+    "org.checkerframework:checker-qual:$checkerQualVersion",
+    "org.javassist:javassist:$javassistVersion",
+    "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion",
   )
   resolutionStrategy.eachDependency {
     if (requested.group == "org.springframework.boot") {
