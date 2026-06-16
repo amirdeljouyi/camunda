@@ -5,6 +5,7 @@
 plugins {
   id("buildlogic.server-conventions")
   id("buildlogic.test-jar-conventions")
+  id("buildlogic.optimize-conventions")
 }
 
 dependencies {

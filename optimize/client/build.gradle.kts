@@ -12,6 +12,7 @@ fun Provider<String>.asEnabledFlag(): Provider<Boolean> = map { value ->
 
 plugins {
   id("buildlogic.server-conventions")
+  id("buildlogic.optimize-conventions")
   id("com.github.node-gradle.node")
 }
 

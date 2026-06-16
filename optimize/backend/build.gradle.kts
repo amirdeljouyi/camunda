@@ -10,6 +10,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
   id("buildlogic.server-conventions")
   id("buildlogic.test-jar-conventions")
+  id("buildlogic.optimize-conventions")
 }
 
 tasks.named<ProcessResources>("processTestResources") {

@@ -108,8 +108,6 @@ dependencyResolutionManagement {
       version("com-github-jnr-jnr-ffi", pomVersion("version.jnr-ffi"))
       version("com-github-jnr-jnr-posix", pomVersion("version.jnr-posix"))
       version("com-github-luben-zstd-jni", pomVersion("version.zstd-jni"))
-      // from optimize/backend/pom.xml
-      version("com-github-sisyphsu-dateparser", "1.0.11")
       version("com-github-vertical-blank-sql-formatter", pomVersion("version.sqlformatter"))
       version("com-github-wnameless-json-json-base", pomVersion("version.json-base"))
       version("com-github-wnameless-json-json-flattener", pomVersion("version.json-flattener"))
@@ -120,27 +118,20 @@ dependencyResolutionManagement {
       version("google-sdk", pomVersion("version.google-sdk"))
       version("com-google-code-findbugs-jsr305", pomVersion("version.findbugs.jsr305"))
       version("com-google-errorprone-error-prone-core", pomVersion("version.error-prone"))
-      // from optimize/pom.xml
-      version("com-google-googlejavaformat-google-java-format", "1.35.0")
+      version(
+        "com-google-googlejavaformat-google-java-format",
+        pomVersion("plugin.version.google-java-format"),
+      )
       // from qa/acceptance-tests/pom.xml
       version("com-ibm-icu-icu4j", "78.2")
-      // from optimize/backend/pom.xml
-      version("com-icegreen-greenmail", "2.1.8")
       version("com-jayway-jsonpath-json-path", pomVersion("version.json-path"))
       // from testing/camunda-process-test-json-test-cases/pom.xml
       version("com-networknt-json-schema-validator", "1.5.9")
       version("com-nimbusds-nimbus-jose-jwt", pomVersion("version.nimbus-jose-jwt"))
       version("com-nimbusds-oauth2-oidc-sdk", pomVersion("version.nimbus-sdk"))
-      // from optimize/backend/pom.xml
-      version("com-opencsv-opencsv", "5.12.0")
       // Oracle JDBC driver; not in parent/pom.xml or Spring Boot BOM
       version("com-oracle-database-jdbc-ojdbc8", "23.9.0.25.07")
-      // from optimize/backend/pom.xml
-      version("com-sun-mail-jakarta-mail", "2.0.2")
-      // from optimize/backend/pom.xml
-      version("com-tdunning-t-digest", "3.3")
       version("com-unboundid-unboundid-ldapsdk", pomVersion("version.unboundid-ldapsdk"))
-      version("com-vdurmont-semver4j", "3.1.0")
       version("commons-codec", pomVersion("version.commons-codec"))
       version("commons-io", pomVersion("version.commons-io"))
       version("commons-validator", pomVersion("version.commons-validator"))
@@ -164,8 +155,6 @@ dependencyResolutionManagement {
         "io-github-acm19-aws-request-signing-apache-interceptor",
         pomVersion("version.aws-signing"),
       )
-      // from optimize/backend/pom.xml
-      version("io-github-netmikey-logunit-logunit-log4j2", "2.0.0")
       // BoringSSL native bindings; separate versioning from netty BOM
       version("io-netty-netty-tcnative-boringssl-static", "2.0.75.Final")
       version(
@@ -222,31 +211,18 @@ dependencyResolutionManagement {
       version("org-apache-httpcomponents-core5-httpcore5", pomVersion("version.httpcore5"))
       version("org-apache-httpcomponents-httpasyncclient", pomVersion("version.httpasyncclient"))
       version("org-apache-httpcomponents-httpclient", pomVersion("version.httpclient"))
-      // Lucene 8.x for Elasticsearch 7.x compat tests in optimize
-      version("org-apache-lucene-lucene-core", "8.11.3")
       // from build-tools/pom.xml (Maven uses plugin.version.surefire separately)
       version("org-apache-maven-surefire-maven-surefire-common", "3.5.4")
       version("org-apache-maven-surefire-surefire-myextensions-api", "3.5.4")
       version("org-camunda-bpm-camunda-license-check", pomVersion("version.camunda-license-check"))
       version("org-camunda-feel-feel-engine", pomVersion("version.feel-scala"))
       version("org-checkerframework-checker-qual", pomVersion("version.checker-qual"))
-      // from optimize/backend/pom.xml
-      version("org-eclipse-angus-jakarta-mail", "2.0.5")
-      // Elasticsearch 7.x for optimize legacy compatibility tests
-      version("org-elasticsearch-elasticsearch", "7.17.29")
       version("org-glassfish-jakarta-json", pomVersion("version.jakarta.json"))
-      // from optimize; not in Spring Boot BOM
-      version("org-glassfish-jersey-core-jersey-client", "4.0.2")
-      version("org-glassfish-jersey-media-jersey-media-json-jackson", "4.0.2")
       // from clients/camunda-spring-boot-starter/pom.xml
       version("org-jboss-forge-roaster-roaster-api", "2.31.0.Final")
       version("org-jeasy-easy-random-core", pomVersion("version.easy-random"))
       version("org-jetbrains-annotations", pomVersion("version.jetbrains-annotations"))
       version("org-mariadb-jdbc-mariadb-java-client", pomVersion("version.mariadb-java-client"))
-      // from optimize/pom.xml
-      version("org-mock-server-mockserver-client-java", "5.15.0")
-      version("org-mock-server-mockserver-core", "5.15.0")
-      version("org-mock-server-mockserver-netty", "5.15.0")
       version("org-mybatis-mybatis-spring", pomVersion("version.mybatis-spring"))
       version(
         "org-openapitools-jackson-databind-nullable",
@@ -261,8 +237,6 @@ dependencyResolutionManagement {
         "org-opensearch-opensearch-testcontainers",
         pomVersion("version.opensearch.testcontainers"),
       )
-      // from optimize/pom.xml
-      version("org-quartz-scheduler-quartz", "2.5.2")
       version("org-reactivestreams-reactive-streams", pomVersion("version.reactive-streams"))
       version("org-rocksdb-rocksdbjni", pomVersion("version.rocksdbjni"))
       // not in Spring Boot 4 BOM
@@ -388,8 +362,9 @@ dependencyResolutionManagement {
         .versionRef("com-github-jnr-jnr-posix")
       library("com-github-luben-zstd-jni", "com.github.luben", "zstd-jni")
         .versionRef("com-github-luben-zstd-jni")
+      // version managed by buildlogic.optimize-conventions
       library("com-github-sisyphsu-dateparser", "com.github.sisyphsu", "dateparser")
-        .versionRef("com-github-sisyphsu-dateparser")
+        .withoutVersion()
       library(
           "com-github-spotbugs-spotbugs-annotations",
           "com.github.spotbugs",
@@ -443,8 +418,8 @@ dependencyResolutionManagement {
         .versionRef("protobuf")
       library("com-h2database-h2", "com.h2database", "h2").versionRef("h2")
       library("com-ibm-icu-icu4j", "com.ibm.icu", "icu4j").versionRef("com-ibm-icu-icu4j")
-      library("com-icegreen-greenmail", "com.icegreen", "greenmail")
-        .versionRef("com-icegreen-greenmail")
+      // version managed by buildlogic.optimize-conventions
+      library("com-icegreen-greenmail", "com.icegreen", "greenmail").withoutVersion()
       library("com-jayway-jsonpath-json-path", "com.jayway.jsonpath", "json-path")
         .versionRef("com-jayway-jsonpath-json-path")
       library("com-microsoft-sqlserver-mssql-jdbc", "com.microsoft.sqlserver", "mssql-jdbc")
@@ -462,13 +437,16 @@ dependencyResolutionManagement {
         .versionRef("com-nimbusds-nimbus-jose-jwt")
       library("com-nimbusds-oauth2-oidc-sdk", "com.nimbusds", "oauth2-oidc-sdk")
         .versionRef("com-nimbusds-oauth2-oidc-sdk")
-      library("com-opencsv-opencsv", "com.opencsv", "opencsv").versionRef("com-opencsv-opencsv")
+      // version managed by buildlogic.optimize-conventions
+      library("com-opencsv-opencsv", "com.opencsv", "opencsv").withoutVersion()
       library("com-oracle-database-jdbc-ojdbc8", "com.oracle.database.jdbc", "ojdbc8")
         .versionRef("com-oracle-database-jdbc-ojdbc8")
+      // version managed by buildlogic.optimize-conventions
       library("com-sun-mail-jakarta-mail", "com.sun.mail", "jakarta.mail")
-        .versionRef("com-sun-mail-jakarta-mail")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
       library("com-tdunning-t-digest", "com.tdunning", "t-digest")
-        .versionRef("com-tdunning-t-digest")
+        .withoutVersion()
       library("com-tngtech-archunit-archunit", "com.tngtech.archunit", "archunit")
         .versionRef("archunit")
       library(
@@ -485,8 +463,8 @@ dependencyResolutionManagement {
         .versionRef("archunit")
       library("com-unboundid-unboundid-ldapsdk", "com.unboundid", "unboundid-ldapsdk")
         .versionRef("com-unboundid-unboundid-ldapsdk")
-      library("com-vdurmont-semver4j", "com.vdurmont", "semver4j")
-        .versionRef("com-vdurmont-semver4j")
+      // version managed by buildlogic.optimize-conventions
+      library("com-vdurmont-semver4j", "com.vdurmont", "semver4j").withoutVersion()
       library("com-uber-nullaway-nullaway", "com.uber.nullaway", "nullaway")
         .versionRef("com-uber-nullaway-nullaway")
       library("com-zaxxer-hikaricp", "com.zaxxer", "HikariCP").withoutVersion()
@@ -535,12 +513,16 @@ dependencyResolutionManagement {
         .versionRef("io-github-acm19-aws-request-signing-apache-interceptor")
       library("io-github-classgraph-classgraph", "io.github.classgraph", "classgraph")
         .versionRef("classgraph")
+      // version managed by buildlogic.optimize-conventions
       library(
           "io-github-netmikey-logunit-logunit-log4j2",
           "io.github.netmikey.logunit",
           "logunit-log4j2",
         )
-        .versionRef("io-github-netmikey-logunit-logunit-log4j2")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
+      library("io-github-netmikey-logunit-logunit-core", "io.github.netmikey.logunit", "logunit-core")
+        .withoutVersion()
       library("io-github-openfeign-feign-core", "io.github.openfeign", "feign-core")
         .withoutVersion()
       library("io-github-openfeign-feign-httpclient", "io.github.openfeign", "feign-httpclient")
@@ -601,6 +583,7 @@ dependencyResolutionManagement {
       library("io-netty-netty-codec-compression", "io.netty", "netty-codec-compression")
         .withoutVersion()
       library("io-netty-netty-codec-dns", "io.netty", "netty-codec-dns").withoutVersion()
+      library("io-netty-netty-codec-http", "io.netty", "netty-codec-http").withoutVersion()
       library("io-netty-netty-common", "io.netty", "netty-common").withoutVersion()
       library("io-netty-netty-handler", "io.netty", "netty-handler").withoutVersion()
       library("io-netty-netty-resolver", "io.netty", "netty-resolver").withoutVersion()
@@ -761,6 +744,8 @@ dependencyResolutionManagement {
         .versionRef("org-apache-httpcomponents-httpasyncclient")
       library("org-apache-httpcomponents-httpclient", "org.apache.httpcomponents", "httpclient")
         .versionRef("org-apache-httpcomponents-httpclient")
+      library("org-apache-httpcomponents-httpmime", "org.apache.httpcomponents", "httpmime")
+        .versionRef("org-apache-httpcomponents-httpclient")
       library("org-apache-httpcomponents-httpcore", "org.apache.httpcomponents", "httpcore")
         .versionRef("httpcomponents")
       library("org-apache-httpcomponents-httpcore-nio", "org.apache.httpcomponents", "httpcore-nio")
@@ -790,7 +775,7 @@ dependencyResolutionManagement {
       library("org-apache-logging-log4j-log4j-bom", "org.apache.logging.log4j", "log4j-bom")
         .versionRef("log4j")
       library("org-apache-lucene-lucene-core", "org.apache.lucene", "lucene-core")
-        .versionRef("org-apache-lucene-lucene-core")
+        .withoutVersion()
       library(
           "org-apache-maven-surefire-maven-surefire-common",
           "org.apache.maven.surefire",
@@ -850,8 +835,9 @@ dependencyResolutionManagement {
       library("org-checkerframework-checker-qual", "org.checkerframework", "checker-qual")
         .versionRef("org-checkerframework-checker-qual")
       library("org-codehaus-janino-janino", "org.codehaus.janino", "janino").withoutVersion()
+      // version managed by buildlogic.optimize-conventions
       library("org-eclipse-angus-jakarta-mail", "org.eclipse.angus", "jakarta.mail")
-        .versionRef("org-eclipse-angus-jakarta-mail")
+        .withoutVersion()
       library("org-eclipse-parsson-parsson", "org.eclipse.parsson", "parsson").versionRef("parsson")
       library(
           "org-elasticsearch-client-elasticsearch-rest-client",
@@ -859,23 +845,26 @@ dependencyResolutionManagement {
           "elasticsearch-rest-client",
         )
         .versionRef("elasticsearch")
+      // version managed by buildlogic.optimize-conventions
       library("org-elasticsearch-elasticsearch", "org.elasticsearch", "elasticsearch")
-        .versionRef("org-elasticsearch-elasticsearch")
+        .withoutVersion()
       library("org-freemarker-freemarker", "org.freemarker", "freemarker").withoutVersion()
       library("org-glassfish-jakarta-json", "org.glassfish", "jakarta.json")
         .versionRef("org-glassfish-jakarta-json")
+      // version managed by buildlogic.optimize-conventions
       library(
           "org-glassfish-jersey-core-jersey-client",
           "org.glassfish.jersey.core",
           "jersey-client",
         )
-        .versionRef("org-glassfish-jersey-core-jersey-client")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
       library(
           "org-glassfish-jersey-media-jersey-media-json-jackson",
           "org.glassfish.jersey.media",
           "jersey-media-json-jackson",
         )
-        .versionRef("org-glassfish-jersey-media-jersey-media-json-jackson")
+        .withoutVersion()
       library("org-hamcrest-hamcrest", "org.hamcrest", "hamcrest").versionRef("hamcrest")
       library("org-immutables-annotate", "org.immutables", "annotate").versionRef("immutables")
       library("org-immutables-value", "org.immutables", "value").versionRef("immutables")
@@ -984,14 +973,23 @@ dependencyResolutionManagement {
         .versionRef("liquibase")
       library("org-mariadb-jdbc-mariadb-java-client", "org.mariadb.jdbc", "mariadb-java-client")
         .versionRef("org-mariadb-jdbc-mariadb-java-client")
+      // version managed by buildlogic.optimize-conventions
       library("org-mock-server-mockserver-client-java", "org.mock-server", "mockserver-client-java")
-        .versionRef("org-mock-server-mockserver-client-java")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
       library("org-mock-server-mockserver-core", "org.mock-server", "mockserver-core")
-        .versionRef("org-mock-server-mockserver-core")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
       library("org-mock-server-mockserver-netty", "org.mock-server", "mockserver-netty")
-        .versionRef("org-mock-server-mockserver-netty")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
+      library("org-mock-server-mockserver-junit-jupiter", "org.mock-server", "mockserver-junit-jupiter")
+        .withoutVersion()
       library("org-mockito-mockito-core", "org.mockito", "mockito-core").withoutVersion()
       library("org-mockito-mockito-junit-jupiter", "org.mockito", "mockito-junit-jupiter")
+        .withoutVersion()
+      // version managed by buildlogic.optimize-conventions
+      library("org-mockito-mockito-inline", "org.mockito", "mockito-inline")
         .withoutVersion()
       library("org-mockito-mockito-bom", "org.mockito", "mockito-bom").versionRef("mockito")
       library("org-msgpack-jackson-dataformat-msgpack", "org.msgpack", "jackson-dataformat-msgpack")
@@ -1047,8 +1045,9 @@ dependencyResolutionManagement {
         )
         .versionRef("org-opensearch-opensearch-testcontainers")
       library("org-postgresql-postgresql", "org.postgresql", "postgresql").versionRef("postgresql")
+      // version managed by buildlogic.optimize-conventions
       library("org-quartz-scheduler-quartz", "org.quartz-scheduler", "quartz")
-        .versionRef("org-quartz-scheduler-quartz")
+        .withoutVersion()
       library("org-reactivestreams-reactive-streams", "org.reactivestreams", "reactive-streams")
         .versionRef("org-reactivestreams-reactive-streams")
       library("org-reflections-reflections", "org.reflections", "reflections")
@@ -1521,6 +1520,17 @@ include(":zeebe-gateway-grpc")
 
 if (!quickly) {
   include(":camunda-optimize")
+  include(":optimize-commons")
+  include(":optimize-backend")
+  include(":upgrade-optimize")
+  include(":optimize-client")
+  include(":optimize-util")
+  project(":camunda-optimize").projectDir = file("optimize-distro")
+  project(":optimize-commons").projectDir = file("optimize/util/optimize-commons")
+  project(":optimize-backend").projectDir = file("optimize/backend")
+  project(":upgrade-optimize").projectDir = file("optimize/upgrade")
+  project(":optimize-client").projectDir = file("optimize/client")
+  project(":optimize-util").projectDir = file("optimize/util")
 }
 
 include(":zeebe-qa-update-tests")
@@ -1573,8 +1583,6 @@ include(":camunda-process-test-spring")
 
 include(":camunda-qa")
 
-include(":tasklist-els-schema")
-
 include(":zeebe-backup-store-s3")
 
 include(":camunda-search-client-reader")
@@ -1608,10 +1616,6 @@ include(":webapps-schema")
 include(":identity-webjar")
 
 include(":zeebe-broker-client")
-
-if (!quickly) {
-  include(":optimize-commons")
-}
 
 include(":camunda-zeebe")
 
@@ -1658,10 +1662,6 @@ include(":camunda-qa-util")
 
 include(":camunda-spring-boot-starter")
 
-if (!quickly) {
-  include(":optimize-backend")
-}
-
 include(":zeebe-protocol-jackson")
 
 include(":camunda-search-client-opensearch")
@@ -1680,10 +1680,6 @@ include(":tasklist-webjar")
 
 include(":zeebe-msgpack-value")
 
-if (!quickly) {
-  include(":upgrade-optimize")
-}
-
 include(":zeebe-qa-util")
 
 include(":camunda-schema-manager")
@@ -1700,10 +1696,6 @@ include(":zeebe-snapshots")
 
 include(":zeebe-backup-store-filesystem")
 
-if (!quickly) {
-  include(":optimize-client")
-}
-
 include(":zeebe-protocol-test-util")
 
 include(":zeebe-broker")
@@ -1713,10 +1705,6 @@ include(":camunda-security-validation")
 include(":zeebe-root")
 
 include(":webapps-backup")
-
-if (!quickly) {
-  include(":optimize-util")
-}
 
 include(":zeebe-feel-integration")
 
@@ -1826,10 +1814,6 @@ project(":operate-common").projectDir = file("operate/common")
 
 project(":zeebe-gateway-grpc").projectDir = file("zeebe/gateway-grpc")
 
-if (!quickly) {
-  project(":camunda-optimize").projectDir = file("optimize-distro")
-}
-
 project(":zeebe-qa-update-tests").projectDir = file("zeebe/qa/update-tests")
 
 project(":camunda-spring-boot-starter-virtual-threads").projectDir =
@@ -1885,8 +1869,6 @@ project(":camunda-process-test-spring").projectDir = file("testing/camunda-proce
 
 project(":camunda-qa").projectDir = file("qa")
 
-project(":tasklist-els-schema").projectDir = file("tasklist/els-schema")
-
 project(":zeebe-backup-store-s3").projectDir = file("zeebe/backup-stores/s3")
 
 project(":camunda-search-client-reader").projectDir = file("search/search-client-reader")
@@ -1918,10 +1900,6 @@ project(":camunda-process-test-coverage").projectDir = file("testing/camunda-pro
 project(":identity-webjar").projectDir = file("identity/client")
 
 project(":zeebe-broker-client").projectDir = file("zeebe/broker-client")
-
-if (!quickly) {
-  project(":optimize-commons").projectDir = file("optimize/util/optimize-commons")
-}
 
 project(":camunda-zeebe").projectDir = file("dist")
 
@@ -1966,10 +1944,6 @@ project(":camunda-qa-util").projectDir = file("qa/util")
 
 project(":camunda-spring-boot-starter").projectDir = file("clients/camunda-spring-boot-starter")
 
-if (!quickly) {
-  project(":optimize-backend").projectDir = file("optimize/backend")
-}
-
 project(":zeebe-protocol-jackson").projectDir = file("zeebe/protocol-jackson")
 
 project(":camunda-search-client-opensearch").projectDir = file("search/search-client-opensearch")
@@ -1989,10 +1963,6 @@ project(":tasklist-webjar").projectDir = file("tasklist/client")
 
 project(":zeebe-msgpack-value").projectDir = file("zeebe/msgpack-value")
 
-if (!quickly) {
-  project(":upgrade-optimize").projectDir = file("optimize/upgrade")
-}
-
 project(":zeebe-qa-util").projectDir = file("zeebe/qa/util")
 
 project(":camunda-schema-manager").projectDir = file("schema-manager")
@@ -2007,10 +1977,6 @@ project(":zeebe-snapshots").projectDir = file("zeebe/snapshot")
 
 project(":zeebe-backup-store-filesystem").projectDir = file("zeebe/backup-stores/filesystem")
 
-if (!quickly) {
-  project(":optimize-client").projectDir = file("optimize/client")
-}
-
 project(":zeebe-protocol-test-util").projectDir = file("zeebe/protocol-test-util")
 
 project(":zeebe-broker").projectDir = file("zeebe/broker")
@@ -2018,10 +1984,6 @@ project(":zeebe-broker").projectDir = file("zeebe/broker")
 project(":camunda-security-validation").projectDir = file("security/security-validation")
 
 project(":zeebe-root").projectDir = file("zeebe")
-
-if (!quickly) {
-  project(":optimize-util").projectDir = file("optimize/util")
-}
 
 project(":zeebe-feel-integration").projectDir = file("zeebe/feel")
 
