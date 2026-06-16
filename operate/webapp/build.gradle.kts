@@ -59,9 +59,7 @@ dependencies {
   api(libs.io.swagger.core.v3.swagger.annotations.jakarta)
   implementation(libs.org.apache.commons.commons.lang3)
   api(libs.org.apache.commons.commons.collections4)
-  api(libs.org.apache.tomcat.embed.tomcat.embed.core) {
-    exclude(group = "org.apache.tomcat", module = "tomcat-annotations-api")
-  }
+  api(libs.org.apache.tomcat.embed.tomcat.embed.core)
   api(libs.io.grpc.grpc.api)
   api(libs.software.amazon.awssdk.sts)
   runtimeOnly(libs.jakarta.servlet.jakarta.servlet.api)

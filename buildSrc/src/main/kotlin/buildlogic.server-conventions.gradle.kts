@@ -121,6 +121,9 @@ configurations.all {
   // creating a circular bridge. Exclude it globally; modules that need Logback for
   // Spring @WebMvcTest must exclude log4j-slf4j2-impl from their testRuntimeClasspath instead.
   exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+  // tomcat-annotations-api is a compile-time artifact inside tomcat-embed-core; not needed
+  // at runtime. Maven excludes it explicitly in every module that pulls tomcat-embed-core.
+  exclude(group = "org.apache.tomcat", module = "tomcat-annotations-api")
 }
 
 tasks.withType<Test>().configureEach {

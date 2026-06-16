@@ -47,9 +47,7 @@ dependencies {
   }
   implementation(project(":camunda-search-client-connect"))
   implementation(project(":zeebe-protocol"))
-  implementation(libs.io.camunda.identity.spring.boot.starter) {
-    exclude(group = "org.apache.tomcat", module = "tomcat-annotations-api")
-  }
+  implementation(libs.io.camunda.identity.spring.boot.starter)
   implementation(libs.org.springframework.spring.context.support)
   implementation(libs.org.springframework.spring.tx)
   implementation(libs.org.springframework.spring.context)
@@ -57,9 +55,7 @@ dependencies {
   implementation(libs.org.springframework.spring.webmvc)
   implementation(libs.org.springframework.spring.web)
   implementation(libs.org.springframework.spring.beans)
-  implementation(libs.org.apache.tomcat.embed.tomcat.embed.core) {
-    exclude(group = "org.apache.tomcat", module = "tomcat-annotations-api")
-  }
+  implementation(libs.org.apache.tomcat.embed.tomcat.embed.core)
   implementation(libs.org.javassist.javassist)
   implementation(libs.org.springframework.security.spring.security.web)
   implementation(libs.org.springframework.security.spring.security.config)

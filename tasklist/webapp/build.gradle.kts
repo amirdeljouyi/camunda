@@ -48,9 +48,7 @@ dependencies {
   api(libs.org.springframework.boot.spring.boot.actuator)
   api(libs.org.springframework.spring.core)
   api(libs.org.springdoc.springdoc.openapi.starter.common)
-  api(libs.org.apache.tomcat.embed.tomcat.embed.core) {
-    exclude(group = "org.apache.tomcat", module = "tomcat-annotations-api")
-  }
+  api(libs.org.apache.tomcat.embed.tomcat.embed.core)
   api(libs.org.springframework.spring.beans)
   api(libs.jakarta.annotation.jakarta.annotation.api)
   implementation(libs.org.apache.commons.commons.lang3)
