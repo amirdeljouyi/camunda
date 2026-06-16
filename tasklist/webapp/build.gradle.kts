@@ -8,7 +8,6 @@ dependencies {
   implementation(project(":webapps-schema"))
   implementation(project(":tasklist-common"))
   implementation(project(":tasklist-webjar"))
-  implementation(project(":tasklist-els-schema"))
   implementation(libs.io.camunda.security.library.spring.boot.starter)
   implementation(libs.io.camunda.security.library.api)
   implementation(project(":camunda-security-core"))
@@ -52,7 +51,6 @@ dependencies {
   api(libs.org.apache.tomcat.embed.tomcat.embed.core) {
     exclude(group = "org.apache.tomcat", module = "tomcat-annotations-api")
   }
-  api(libs.org.elasticsearch.elasticsearch)
   api(libs.org.springframework.spring.beans)
   api(libs.jakarta.annotation.jakarta.annotation.api)
   implementation(libs.org.apache.commons.commons.lang3)

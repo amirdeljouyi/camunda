@@ -12,7 +12,6 @@ dependencies {
   testImplementation(project(":tasklist-webapp"))
   testImplementation(project(":tasklist-common"))
   testImplementation(project(":tasklist-qa-util"))
-  testImplementation(project(":tasklist-els-schema"))
   testImplementation(project(":tasklist-data-generator"))
   testImplementation(project(":camunda-service"))
   testImplementation(project(":camunda-search-domain"))
