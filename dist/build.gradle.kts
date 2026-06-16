@@ -303,7 +303,6 @@ val distZip by
   }
 
 dependencies {
-  implementation(enforcedPlatform(libs.org.springframework.boot.spring.boot.dependencies))
   implementation(project(":zeebe-bpmn-model"))
   implementation(project(":configuration"))
   implementation(project(":camunda-search-domain"))

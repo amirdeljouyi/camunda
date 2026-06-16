@@ -14,6 +14,13 @@ val httpcore5Version =
   versionCatalog.findVersion("org-apache-httpcomponents-core5-httpcore5").get().requiredVersion
 val httpclient5Version =
   versionCatalog.findVersion("org-apache-httpcomponents-client5-httpclient5").get().requiredVersion
+val springBootVersion = versionCatalog.findVersion("spring-boot").get().requiredVersion
+val micrometerVersion = versionCatalog.findVersion("micrometer").get().requiredVersion
+val auth0Version = versionCatalog.findVersion("auth0").get().requiredVersion
+val jwksRsaVersion = versionCatalog.findVersion("jwks-rsa").get().requiredVersion
+val okioJvmVersion = versionCatalog.findVersion("okio-jvm").get().requiredVersion
+val nimbusJoseJwtVersion =
+  versionCatalog.findVersion("com-nimbusds-nimbus-jose-jwt").get().requiredVersion
 val includePerformanceTests = providers.gradleProperty("includePerformanceTests").isPresent
 val includeStraceTests = providers.gradleProperty("includeStraceTests").isPresent
 
@@ -86,17 +93,29 @@ dependencies {
   )
 }
 
-// Spring Boot 4 BOM uses strictly constraints for elasticsearch-java (upgrades 8.x → 9.x).
-// zeebe-test-container forces httpcore5:5.3.x via constraint, which breaks opensearch-java 3.5+.
-// dist uses enforcedPlatform(spring-boot-bom) which strictly pins httpclient5:5.5.2; that version
-// was compiled against httpcore5:5.3.6 and is incompatible with the forced httpcore5:5.4.x.
-// Force all three to the POM-pinned versions so they win over external forced constraints.
+// Force versions in the same way they are pinned by maven.
+// Either explicitly or implicitly by the order of the dependencies being listed in the pom.
 configurations.all {
   resolutionStrategy.force(
     "co.elastic.clients:elasticsearch-java:$esJavaVersion",
     "org.apache.httpcomponents.core5:httpcore5:$httpcore5Version",
     "org.apache.httpcomponents.client5:httpclient5:$httpclient5Version",
+    "com.auth0:auth0:$auth0Version",
+    "com.auth0:jwks-rsa:$jwksRsaVersion",
+    "com.squareup.okio:okio-jvm:$okioJvmVersion",
+    "com.nimbusds:nimbus-jose-jwt:$nimbusJoseJwtVersion",
   )
+  resolutionStrategy.eachDependency {
+    if (requested.group == "org.springframework.boot") {
+      useVersion(springBootVersion)
+    }
+    // context-propagation has independent versioning; only pin the BOM-managed artifacts.
+    if (requested.group == "io.micrometer" &&
+        requested.name.startsWith("micrometer-") &&
+        requested.name != "micrometer-bom") {
+      useVersion(micrometerVersion)
+    }
+  }
   // server-conventions adds log4j-slf4j2-impl (SLF4J → Log4j) globally.
   // spring-boot-starter-logging pulls in logback and log4j-to-slf4j (Log4j → SLF4J),
   // creating a circular bridge. Exclude it globally; modules that need Logback for

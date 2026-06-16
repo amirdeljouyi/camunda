@@ -5,7 +5,6 @@
 plugins { id("buildlogic.server-conventions") }
 
 dependencies {
-  implementation(enforcedPlatform(libs.org.springframework.boot.spring.boot.dependencies))
   implementation(project(":camunda-spring-utils"))
   implementation(project(":camunda-gateway-model"))
   implementation(project(":configuration"))
