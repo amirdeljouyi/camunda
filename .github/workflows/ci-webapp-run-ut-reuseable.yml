@@ -33,6 +33,16 @@ on:
         required: false
         default: "test"
         type: string
+      gradleSuiteAsTask:
+        description: >
+          When true, run a dedicated per-suite Gradle task named '<gradleTestTaskName><suite>'
+          (e.g. 'utCoreFeatures') instead of filtering a generic task with --tests. This avoids
+          the junit-platform-suite stranding bug where a --tests filter matching one suite empties
+          the sibling suite and fails with NoTestsDiscoveredException. Requires the module to
+          define those tasks (Optimize does via buildlogic.optimize-conventions).
+        required: false
+        default: false
+        type: boolean
 
 env:
   GHA_BEST_PRACTICES_LINTER: enabled
@@ -99,7 +109,13 @@ jobs:
           else
             GRADLE_ARGS=(--no-daemon --console=plain --parallel -Pskip.fe.build)
             for module in ${{ inputs.modules }}; do
-              GRADLE_ARGS+=(":${module}:${{ inputs.gradleTestTaskName }}" --tests "*${{ inputs.componentName }}${{ inputs.suite }}TestSuite")
+              if [[ "${{ inputs.gradleSuiteAsTask }}" == "true" ]]; then
+                # Dedicated per-suite task (e.g. :optimize-commons:utCoreFeatures) selects a single
+                # @Suite class, so the sibling suite is never discovered and cannot be stranded.
+                GRADLE_ARGS+=(":${module}:${{ inputs.gradleTestTaskName }}${{ inputs.suite }}")
+              else
+                GRADLE_ARGS+=(":${module}:${{ inputs.gradleTestTaskName }}" --tests "*${{ inputs.componentName }}${{ inputs.suite }}TestSuite")
+              fi
             done
             ./gradlew "${GRADLE_ARGS[@]}" | tee "${BUILD_OUTPUT_FILE_PATH}";
           fi

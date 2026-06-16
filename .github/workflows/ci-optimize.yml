@@ -67,6 +67,7 @@ jobs:
       owner: ${{ matrix.owner }}
       modules: ${{ matrix.modules }}
       gradleTestTaskName: ut
+      gradleSuiteAsTask: true
 
   optimize-it-elasticsearch:
     name: "Integration / Elasticsearch ITs"
