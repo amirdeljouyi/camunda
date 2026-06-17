@@ -24,6 +24,16 @@ const mockGetIncidentProcessInstanceStatisticsByErrorEndpoint = createEndpointMo
 	method: endpoints.getIncidentProcessInstanceStatisticsByError.method as 'POST',
 });
 
+const mockGetProcessDefinitionInstanceVersionStatisticsEndpoint = createEndpointMock({
+	endpoint: endpoints.getProcessDefinitionInstanceVersionStatistics.getUrl(),
+	method: endpoints.getProcessDefinitionInstanceVersionStatistics.method as 'POST',
+});
+
+const mockGetIncidentProcessInstanceStatisticsByDefinitionEndpoint = createEndpointMock({
+	endpoint: endpoints.getIncidentProcessInstanceStatisticsByDefinition.getUrl(),
+	method: endpoints.getIncidentProcessInstanceStatisticsByDefinition.method as 'POST',
+});
+
 const mockGetProcessDefinitionInstanceStatisticsEndpointSequential = createSequentialEndpointMock({
 	endpoint: endpoints.getProcessDefinitionInstanceStatistics.getUrl(),
 	method: endpoints.getProcessDefinitionInstanceStatistics.method as 'POST',
@@ -76,4 +86,6 @@ export {
 	mockGetProcessDefinitionInstanceStatisticsEndpointSequential,
 	mockGetIncidentProcessInstanceStatisticsByErrorEndpoint,
 	mockGetIncidentProcessInstanceStatisticsByErrorEndpointSequential,
+	mockGetProcessDefinitionInstanceVersionStatisticsEndpoint,
+	mockGetIncidentProcessInstanceStatisticsByDefinitionEndpoint,
 };
