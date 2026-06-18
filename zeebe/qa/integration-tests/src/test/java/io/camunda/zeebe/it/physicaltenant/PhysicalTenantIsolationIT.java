@@ -17,6 +17,7 @@ import io.camunda.client.api.response.ActivateJobsResponse;
 import io.camunda.zeebe.model.bpmn.Bpmn;
 import io.camunda.zeebe.model.bpmn.BpmnModelInstance;
 import io.camunda.zeebe.qa.util.cluster.PhysicalTenantsITHelper;
+import io.camunda.zeebe.qa.util.cluster.PhysicalTenantsITHelper.Storage;
 import io.camunda.zeebe.qa.util.cluster.TestStandaloneBroker;
 import io.camunda.zeebe.qa.util.junit.ZeebeIntegration;
 import io.camunda.zeebe.qa.util.junit.ZeebeIntegration.TestZeebe;
@@ -43,9 +44,8 @@ final class PhysicalTenantIsolationIT {
   // declaring tenant A starts a second, fully isolated partition group / engine for it
   private static final PhysicalTenantsITHelper TENANTS =
       PhysicalTenantsITHelper.builder()
-          .withTenant(
-              PhysicalTenantsITHelper.DEFAULT_TENANT_ID, PhysicalTenantsITHelper.STORAGE_NONE)
-          .withTenant(TENANT_A, PhysicalTenantsITHelper.STORAGE_NONE)
+          .withTenant(PhysicalTenantsITHelper.DEFAULT_TENANT_ID, Storage.none())
+          .withTenant(TENANT_A, Storage.none())
           .build();
 
   @TestZeebe
