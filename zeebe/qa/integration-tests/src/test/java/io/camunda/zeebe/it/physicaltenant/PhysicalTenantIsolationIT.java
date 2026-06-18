@@ -91,7 +91,7 @@ final class PhysicalTenantIsolationIT {
                             .getProcesses())
                     .isNotEmpty());
 
-    // when - an instance is created and activated in tenant A
+    // when - an instance is created in tenant A, making a job available there
     final long processInstanceKey =
         tenantAClient
             .newCreateInstanceCommand()
@@ -101,31 +101,8 @@ final class PhysicalTenantIsolationIT {
             .join()
             .getProcessInstanceKey();
 
-    final ActivateJobsResponse tenantAJobs =
-        tenantAClient
-            .newActivateJobsCommand()
-            .jobType(JOB_TYPE)
-            .maxJobsToActivate(10)
-            .send()
-            .join();
-
-    // then - tenant A sees and can complete the job for its own instance
-    assertThat(tenantAJobs.getJobs()).hasSize(1);
-    assertThat(tenantAJobs.getJobs().get(0).getProcessInstanceKey()).isEqualTo(processInstanceKey);
-    tenantAClient.newCompleteCommand(tenantAJobs.getJobs().get(0).getKey()).send().join();
-
-    // and - the default tenant is unaffected: the process was never deployed there
-    assertThatThrownBy(
-            () ->
-                defaultClient
-                    .newCreateInstanceCommand()
-                    .bpmnProcessId(processId)
-                    .latestVersion()
-                    .send()
-                    .join())
-        .isInstanceOf(ClientStatusException.class);
-
-    // ... and none of tenant A's jobs leaked into the default tenant
+    // then - the default tenant cannot see that job while it is still live in tenant A: the job
+    // lives in tenant A's partition group and never leaks across the tenant boundary
     final ActivateJobsResponse defaultJobs =
         defaultClient
             .newActivateJobsCommand()
@@ -135,5 +112,28 @@ final class PhysicalTenantIsolationIT {
             .send()
             .join();
     assertThat(defaultJobs.getJobs()).isEmpty();
+
+    // and - tenant A sees the job for its own instance and can complete it
+    final ActivateJobsResponse tenantAJobs =
+        tenantAClient
+            .newActivateJobsCommand()
+            .jobType(JOB_TYPE)
+            .maxJobsToActivate(10)
+            .send()
+            .join();
+    assertThat(tenantAJobs.getJobs()).hasSize(1);
+    assertThat(tenantAJobs.getJobs().get(0).getProcessInstanceKey()).isEqualTo(processInstanceKey);
+    tenantAClient.newCompleteCommand(tenantAJobs.getJobs().get(0).getKey()).send().join();
+
+    // and - the process was never deployed to the default tenant
+    assertThatThrownBy(
+            () ->
+                defaultClient
+                    .newCreateInstanceCommand()
+                    .bpmnProcessId(processId)
+                    .latestVersion()
+                    .send()
+                    .join())
+        .isInstanceOf(ClientStatusException.class);
   }
 }
