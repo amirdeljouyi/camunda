@@ -51,7 +51,7 @@ env-up: $(DATABASE) setup-maven-context
 		$(WRITE_OR_REPLACE_SCRIPT) CAMUNDA_SECURITY_AUTHORIZATIONS_ENABLED "false" $(MAVEN_CONTEXT)
 	$(call run-env)
 
-# Set the env var ZEEBE_TASKLIST_AUTH0_CLIENTSECRET in your shell please, eg: export ZEEBE_TASKLIST_AUTH0_CLIENTSECRET=<client-secret>
+# Set the env var CAMUNDA_TASKLIST_AUTH0_CLIENTSECRET in your shell please, eg: export CAMUNDA_TASKLIST_AUTH0_CLIENTSECRET=<client-secret>
 .PHONY: env-sso-up
 env-sso-up: $(DATABASE) setup-maven-context
 	$(eval SERVICES := $(DATABASE))

@@ -69,7 +69,7 @@ env-os-up:
       CAMUNDA_SECURITY_INITIALIZATION_DEFAULTROLES_ADMIN_USERS_0=demo \
       CAMUNDA_SECURITY_AUTHENTICATION_UNPROTECTEDAPI=true \
       CAMUNDA_SECURITY_AUTHORIZATIONS_ENABLED=false \
-         mvn clean install -DskipTests -DskipChecks -f ../dist/pom.xml spring-boot:run -Dspring-boot.run.mainClass="io.camunda.application.StandaloneOperate" -Dspring-boot.run.profiles=dev,dev-data,auth
+	     mvn clean install -DskipTests -DskipChecks -f ../dist/pom.xml spring-boot:run -Dspring-boot.run.mainClass="io.camunda.application.StandaloneCamunda" -Dspring-boot.run.profiles=operate,broker,tasklist,dev,dev-data,consolidated-auth
 
 # Look up for users (bender/bender etc) in: https://github.com/rroemhild/docker-test-openldap
 .PHONY: env-ldap-up
@@ -82,7 +82,7 @@ env-ldap-up:
        CAMUNDA_OPERATE_LDAP_MANAGERDN=cn=admin,dc=planetexpress,dc=com \
        CAMUNDA_OPERATE_LDAP_MANAGERPASSWORD=GoodNewsEveryone \
        CAMUNDA_OPERATE_LDAP_USERSEARCHFILTER=uid={0} \
-	   mvn clean install -DskipTests -DskipChecks -f ../dist/pom.xml spring-boot:run -Dspring-boot.run.mainClass="io.camunda.application.StandaloneOperate" -Dspring-boot.run.profiles=dev,dev-data,ldap-auth
+	   mvn clean install -DskipTests -DskipChecks -f ../dist/pom.xml spring-boot:run -Dspring-boot.run.mainClass="io.camunda.application.StandaloneCamunda" -Dspring-boot.run.profiles=operate,broker,tasklist,dev,dev-data,ldap-auth
 
 # Set the env var CAMUNDA_OPERATE_AUTH0_CLIENTSECRET in your shell please, eg: export CAMUNDA_OPERATE_AUTH0_CLIENTSECRET=<client-secret>
 .PHONY: env-sso-up
@@ -99,7 +99,7 @@ env-sso-up:
        CAMUNDA_OPERATE_AUTH0_ORGANIZATION=6ff582aa-a62e-4a28-aac7-4d2224d8c58a \
        CAMUNDA_OPERATE_AUTH0_ORGANIZATIONSKEY=https://camunda.com/orgs \
        CAMUNDA_OPERATE_CLOUD_CONSOLE_URL=https://console.cloud.ultrawombat.com/ \
-	   mvn clean install -DskipTests -DskipChecks -f ../dist/pom.xml spring-boot:run -Dspring-boot.run.mainClass="io.camunda.application.StandaloneOperate" -Dspring-boot.run.profiles=dev,dev-data,sso-auth
+	   mvn clean install -DskipTests -DskipChecks -f ../dist/pom.xml spring-boot:run -Dspring-boot.run.mainClass="io.camunda.application.StandaloneCamunda" -Dspring-boot.run.profiles=operate,broker,tasklist,dev,dev-data,sso-auth
 
 .PHONY: env-identity-up
 env-identity-up:
