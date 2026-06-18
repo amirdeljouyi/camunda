@@ -16,6 +16,7 @@ import io.camunda.client.api.command.ClientStatusException;
 import io.camunda.client.api.response.ActivateJobsResponse;
 import io.camunda.zeebe.model.bpmn.Bpmn;
 import io.camunda.zeebe.model.bpmn.BpmnModelInstance;
+import io.camunda.zeebe.qa.util.cluster.PhysicalTenantsITHelper;
 import io.camunda.zeebe.qa.util.cluster.TestStandaloneBroker;
 import io.camunda.zeebe.qa.util.junit.ZeebeIntegration;
 import io.camunda.zeebe.qa.util.junit.ZeebeIntegration.TestZeebe;
@@ -38,30 +39,27 @@ final class PhysicalTenantIsolationIT {
   private static final String TENANT_A = "tenanta";
   private static final String JOB_TYPE = "task";
 
+  // the default tenant and tenant A both run broker-only (no secondary storage, M1 scope);
+  // declaring tenant A starts a second, fully isolated partition group / engine for it
+  private static final PhysicalTenantsITHelper TENANTS =
+      PhysicalTenantsITHelper.builder()
+          .withTenant(
+              PhysicalTenantsITHelper.DEFAULT_TENANT_ID, PhysicalTenantsITHelper.STORAGE_NONE)
+          .withTenant(TENANT_A, PhysicalTenantsITHelper.STORAGE_NONE)
+          .build();
+
   @TestZeebe
   private final TestStandaloneBroker broker =
-      new TestStandaloneBroker()
-          .withUnauthenticatedAccess()
-          // the default tenant uses no secondary storage (broker-only, M1 scope) ...
-          .withProperty("camunda.data.secondary-storage.type", "none")
-          // ... and declaring tenant A with a matching storage type starts a second, fully
-          // isolated partition group / engine for it
-          .withProperty(
-              "camunda.physical-tenants." + TENANT_A + ".data.secondary-storage.type", "none")
-          // each explicitly-configured physical tenant must provide its own initialization block
-          .withProperty(
-              "camunda.physical-tenants."
-                  + TENANT_A
-                  + ".security.initialization.default-roles.admin.users[0]",
-              TENANT_A + "-admin");
+      TENANTS.configure(new TestStandaloneBroker().withUnauthenticatedAccess());
 
   @AutoClose private CamundaClient defaultClient;
   @AutoClose private CamundaClient tenantAClient;
 
   @BeforeEach
   void beforeEach() {
-    defaultClient = broker.newClientBuilder().build();
-    tenantAClient = broker.newClientBuilder().physicalTenantId(TENANT_A).build();
+    defaultClient =
+        TENANTS.newClientBuilder(broker, PhysicalTenantsITHelper.DEFAULT_TENANT_ID).build();
+    tenantAClient = TENANTS.newClientBuilder(broker, TENANT_A).build();
   }
 
   @Test
