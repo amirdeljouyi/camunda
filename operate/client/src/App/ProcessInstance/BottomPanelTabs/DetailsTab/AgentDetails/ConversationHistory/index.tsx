@@ -13,7 +13,7 @@ import type {QuerySortOrder} from '@camunda/camunda-api-zod-schemas/8.10';
 import {useAgentInstanceHistory} from 'modules/queries/agentInstances/useAgentInstanceHistory';
 import {useProcessInstanceElementSelection} from 'modules/hooks/useProcessInstanceElementSelection';
 import {ConversationMessage} from '../ConversationMessage';
-import {ConversationContainer, ErrorHint} from './styled';
+import {ConversationContainer, StatusHint} from './styled';
 
 type ConversationHistoryProps = {
   agentInstanceKey: string;
@@ -40,11 +40,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
   }
 
   if (status === 'error') {
-    return (
-      <ErrorHint data-testid="conversation-history-error">
-        Failed to load conversation history.
-      </ErrorHint>
-    );
+    return <StatusHint>Failed to load conversation history.</StatusHint>;
   }
 
   return (
