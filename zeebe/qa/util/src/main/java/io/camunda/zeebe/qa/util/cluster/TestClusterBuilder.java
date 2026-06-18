@@ -291,6 +291,7 @@ public final class TestClusterBuilder {
   }
 
   private void applyConfigFunctions(final MemberId id, final TestApplication<?> zeebe) {
+    System.out.println("BrokerId is " + id);
     nodeConfig.accept(zeebe);
 
     if (zeebe instanceof final TestStandaloneGateway gateway) {
