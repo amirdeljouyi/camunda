@@ -571,8 +571,25 @@ public final class SearchQueryBuilders {
     // Handle common operations
     final var res =
         switch (operation.operator()) {
-          case EQUALS -> term(field, TypedValue.toTypedValue(operation.value()));
-          case NOT_EQUALS -> mustNot(term(field, TypedValue.toTypedValue(operation.value())));
+          case EQUALS -> {
+            if (operation.type().equals(ValueTypeEnum.LONG)) {
+              // Zeebe serializes whole numbers as doubles (e.g. "356.0"), so match both the
+              // integer and double string representations on the keyword field.
+              yield or(
+                  term(field, TypedValue.toTypedValue(operation.value())),
+                  term(field, TypedValue.of(operation.value() + ".0")));
+            }
+            yield term(field, TypedValue.toTypedValue(operation.value()));
+          }
+          case NOT_EQUALS -> {
+            if (operation.type().equals(ValueTypeEnum.LONG)) {
+              yield mustNot(
+                  or(
+                      term(field, TypedValue.toTypedValue(operation.value())),
+                      term(field, TypedValue.of(operation.value() + ".0"))));
+            }
+            yield mustNot(term(field, TypedValue.toTypedValue(operation.value())));
+          }
           case EXISTS -> exists(field);
           case NOT_EXISTS -> mustNot(exists(field));
           case IN -> objectTerms(field, operation.values());

@@ -16,10 +16,11 @@ import io.camunda.search.clients.query.SearchTermQuery;
 import io.camunda.search.clients.query.SearchTermsQuery;
 import io.camunda.search.clients.types.TypedValue;
 import io.camunda.search.filter.FilterBuilders;
+import io.camunda.search.filter.Operation;
 import io.camunda.security.core.auth.RequiredAuthorization;
-import io.camunda.security.core.authz.AuthorizationCheck;
-import io.camunda.security.core.authz.ResourceAccessChecks;
-import io.camunda.security.core.authz.TenantCheck;
+import io.camunda.security.reader.AuthorizationCheck;
+import io.camunda.security.reader.ResourceAccessChecks;
+import io.camunda.security.reader.TenantCheck;
 import io.camunda.webapps.schema.descriptors.template.VariableTemplate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -165,6 +166,79 @@ public class VariableQueryTransformerTest extends AbstractTransformerTest {
                       (term) -> {
                         assertThat(term.field()).isEqualTo("value");
                         assertThat(term.value().stringValue()).isEqualTo("testValue");
+                      });
+            });
+  }
+
+  @Test
+  public void shouldQueryByIntegerValueEqualsWithBothNumericRepresentations() {
+    // given — integer string "356" is stored by Zeebe as "356.0", so match both representations
+    final var filter = FilterBuilders.variable((f) -> f.valueOperations(Operation.eq("356")));
+
+    // when
+    final var searchRequest = transformQuery(filter);
+
+    // then — expect a should-OR with term("356" as long) and term("356.0" as string)
+    final var queryVariant = searchRequest.queryOption();
+    assertThat(queryVariant)
+        .isInstanceOfSatisfying(
+            SearchBoolQuery.class,
+            boolQuery -> {
+              assertThat(boolQuery.should()).hasSize(2);
+              final var terms =
+                  boolQuery.should().stream()
+                      .map(SearchQuery::queryOption)
+                      .map(SearchTermQuery.class::cast)
+                      .toList();
+              assertThat(terms).extracting(SearchTermQuery::field).containsOnly("value");
+              final var valueStrings =
+                  terms.stream()
+                      .map(
+                          t ->
+                              t.value().isString()
+                                  ? t.value().stringValue()
+                                  : String.valueOf(t.value().longValue()))
+                      .toList();
+              assertThat(valueStrings).containsExactlyInAnyOrder("356", "356.0");
+            });
+  }
+
+  @Test
+  public void shouldQueryByIntegerValueNotEqualsExcludesBothRepresentations() {
+    // given
+    final var filter = FilterBuilders.variable((f) -> f.valueOperations(Operation.neq("356")));
+
+    // when
+    final var searchRequest = transformQuery(filter);
+
+    // then — expect mustNot wrapping a should-OR with both representations
+    final var queryVariant = searchRequest.queryOption();
+    assertThat(queryVariant)
+        .isInstanceOfSatisfying(
+            SearchBoolQuery.class,
+            boolQuery -> {
+              assertThat(boolQuery.mustNot()).hasSize(1);
+              final var inner = boolQuery.mustNot().getFirst().queryOption();
+              assertThat(inner)
+                  .isInstanceOfSatisfying(
+                      SearchBoolQuery.class,
+                      shouldBool -> {
+                        assertThat(shouldBool.should()).hasSize(2);
+                        final var terms =
+                            shouldBool.should().stream()
+                                .map(SearchQuery::queryOption)
+                                .map(SearchTermQuery.class::cast)
+                                .toList();
+                        assertThat(terms).extracting(SearchTermQuery::field).containsOnly("value");
+                        final var valueStrings =
+                            terms.stream()
+                                .map(
+                                    t ->
+                                        t.value().isString()
+                                            ? t.value().stringValue()
+                                            : String.valueOf(t.value().longValue()))
+                                .toList();
+                        assertThat(valueStrings).containsExactlyInAnyOrder("356", "356.0");
                       });
             });
   }
