@@ -572,6 +572,9 @@ public final class SearchQueryBuilders {
     final var res =
         switch (operation.operator()) {
           case EQUALS -> {
+            if (operation.type().equals(ValueTypeEnum.NULL)) {
+              yield mustNot(exists(field));
+            }
             if (operation.type().equals(ValueTypeEnum.LONG)) {
               // Zeebe serializes whole numbers as doubles (e.g. "356.0"), so match both the
               // integer and double string representations on the keyword field.
@@ -582,6 +585,9 @@ public final class SearchQueryBuilders {
             yield term(field, TypedValue.toTypedValue(operation.value()));
           }
           case NOT_EQUALS -> {
+            if (operation.type().equals(ValueTypeEnum.NULL)) {
+              yield exists(field);
+            }
             if (operation.type().equals(ValueTypeEnum.LONG)) {
               yield mustNot(
                   or(

@@ -171,6 +171,39 @@ public class VariableQueryTransformerTest extends AbstractTransformerTest {
   }
 
   @Test
+  public void shouldQueryByNullValueEqualsAsNotExists() {
+    // given — "$eq: null" should match variables whose value field is absent/null
+    final var filter = FilterBuilders.variable((f) -> f.valueOperations(Operation.eq("null")));
+
+    // when
+    final var searchRequest = transformQuery(filter);
+
+    // then — mustNot(exists("value"))
+    final var queryVariant = searchRequest.queryOption();
+    assertThat(queryVariant)
+        .isInstanceOfSatisfying(
+            SearchBoolQuery.class,
+            boolQuery -> {
+              assertThat(boolQuery.mustNot()).hasSize(1);
+              assertThat(boolQuery.mustNot().getFirst().queryOption())
+                  .isInstanceOf(io.camunda.search.clients.query.SearchExistsQuery.class);
+            });
+  }
+
+  @Test
+  public void shouldQueryByNullValueNotEqualsAsExists() {
+    // given — "$neq: null" should match variables that have any non-null value
+    final var filter = FilterBuilders.variable((f) -> f.valueOperations(Operation.neq("null")));
+
+    // when
+    final var searchRequest = transformQuery(filter);
+
+    // then — exists("value")
+    final var queryVariant = searchRequest.queryOption();
+    assertThat(queryVariant).isInstanceOf(io.camunda.search.clients.query.SearchExistsQuery.class);
+  }
+
+  @Test
   public void shouldQueryByIntegerValueEqualsWithBothNumericRepresentations() {
     // given — integer string "356" is stored by Zeebe as "356.0", so match both representations
     final var filter = FilterBuilders.variable((f) -> f.valueOperations(Operation.eq("356")));
