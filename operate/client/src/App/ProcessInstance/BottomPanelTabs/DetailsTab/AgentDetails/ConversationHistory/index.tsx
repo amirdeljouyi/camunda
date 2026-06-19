@@ -11,7 +11,7 @@ import {Button, SkeletonText} from '@carbon/react';
 import {SortAscending, SortDescending} from '@carbon/react/icons';
 import type {QuerySortOrder} from '@camunda/camunda-api-zod-schemas/8.10';
 import {useAgentInstanceHistory} from 'modules/queries/agentInstances/useAgentInstanceHistory';
-import {useProcessInstanceElementSelection} from 'modules/hooks/useProcessInstanceElementSelection';
+import {useProcessInstanceElementSelectActions} from 'modules/hooks/useProcessInstanceElementSelection';
 import {ConversationMessage} from '../ConversationMessage';
 import {ConversationContainer, StatusHint} from './styled';
 
@@ -25,7 +25,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
   enablePeriodicRefetch,
 }) => {
   const [sortOrder, setSortOrder] = useState<QuerySortOrder>('desc');
-  const {selectElement} = useProcessInstanceElementSelection();
+  const {selectElement} = useProcessInstanceElementSelectActions();
   const {data, status} = useAgentInstanceHistory(agentInstanceKey, {
     enablePeriodicRefetch,
     sortOrder,
