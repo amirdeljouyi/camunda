@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import org.awaitility.Awaitility;
@@ -107,8 +106,7 @@ public class DynamicNodeIdIT {
                             final S3 s3 = cfg.getCluster().getNodeIdProvider().s3();
                             s3.setTaskId(UUID.randomUUID().toString());
                             s3.setBucketName(
-                                BUCKET_NAMES.get(
-                                    Optional.ofNullable(cfg.getCluster().getZone())));
+                                BUCKET_NAMES.get(Optional.ofNullable(cfg.getCluster().getZone())));
                             s3.setLeaseDuration(LEASE_DURATION);
                             s3.setEndpoint(S3.getEndpoint().toString());
                             s3.setRegion(S3.getRegion());
@@ -123,9 +121,7 @@ public class DynamicNodeIdIT {
         zone -> {
           final var bucket = BUCKET_NAMES.get(zone);
           final var objects = s3Client.listObjects(b -> b.bucket(bucket));
-          objects
-              .contents()
-              .parallelStream()
+          objects.contents().parallelStream()
               .forEach(obj -> s3Client.deleteObject(b -> b.bucket(bucket).key(obj.key())));
         });
   }
@@ -464,7 +460,9 @@ public class DynamicNodeIdIT {
                             "camunda.data.secondary-storage.type", SecondaryStorageType.none.name())
                         .withUnifiedConfig(
                             cfg -> {
-                              cfg.getData().getSecondaryStorage().setType(SecondaryStorageType.none);
+                              cfg.getData()
+                                  .getSecondaryStorage()
+                                  .setType(SecondaryStorageType.none);
                               cfg.getCluster().getNodeIdProvider().setType(Type.S3);
                               final S3 s3 = cfg.getCluster().getNodeIdProvider().s3();
                               s3.setTaskId(UUID.randomUUID().toString());
