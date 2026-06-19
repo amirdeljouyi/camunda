@@ -106,7 +106,21 @@ const AgentDetails: React.FC<AgentDetailsProps> = ({
   const {metrics, limits, definition} = agentInstance;
 
   return (
-    <AgentDetailsContainer data-testid="agent-details">
+    <AgentDetailsContainer
+      data-testid="agent-details"
+      onKeyDown={(e) => {
+        // Accordion items trigger `onHeadingClick` when 'Space' or 'Enter' is pressed.
+        // But they do not trigger for 'Escape', which closes the accordion. This de-sync controlled
+        // open state as the accordion item still closes... This interception ensures that
+        // the state stays in sync. PS: Even their docs have the problem...
+        if (
+          e.key === 'Escape' &&
+          (e.target as HTMLElement).innerText === 'Conversation history'
+        ) {
+          setIsConversationHistoryOpen(false);
+        }
+      }}
+    >
       <AgentHeading>AI Agent</AgentHeading>
       <Accordion align="start">
         <AccordionItem
