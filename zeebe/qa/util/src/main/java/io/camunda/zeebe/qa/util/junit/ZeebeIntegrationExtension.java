@@ -213,6 +213,9 @@ final class ZeebeIntegrationExtension
     // after stopping a broker
     if (resource.app() instanceof final TestStandaloneBroker broker) {
       final var directory = createManagedDirectory(store, workingDirectoryName(broker.nodeId()));
+      System.out.println(
+          "XXXXXXXXXXXXXXXXXXXXX Data directory for broker %s is %s"
+              .formatted(broker.nodeId(), directory));
       setWorkingDirectory(directory, broker.nodeId(), broker);
     }
 
@@ -264,7 +267,8 @@ final class ZeebeIntegrationExtension
       }
     } else {
       // Use the shared directory directly for dynamic node IDs
-      workingDirectory = directory;
+      workingDirectory = id.zone() != null ? directory.resolve(id.zone()) : directory;
+      System.out.println("XXXXX working directory for " + id + " is " + workingDirectory);
     }
 
     broker.withWorkingDirectory(workingDirectory);

@@ -426,6 +426,9 @@ public final class TestCluster implements CloseableSilently {
         .doesNotThrowAnyException();
     try (final var client = node.newClientBuilder().preferRestOverGrpc(false).build()) {
       TopologyAssert.assertThat(client.newTopologyRequest().send().join()).isHealthy();
+    } catch (final Exception e) {
+      System.out.println("Topology not healthy: " + e);
+      throw new RuntimeException(e);
     }
   }
 
